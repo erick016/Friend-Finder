@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reservation Page</title>
+
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+  <div class="container">
+
+    <div class="jumbotron">
+      <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+      <hr>
+      <h2 class="text-center">Make your reservation</h2>
+      <br>
+
+      <div class="text-center">
+        <a href="/home"><button class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home">Go Home!</span></button></a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12">
+
+        <!-- Reservation Page -->
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">Table Reservation</h4>
+          </div>
+          <div class="panel-body">
+
+            <form role="form">
+
+              <div class="form-group">
+                <label for="nameFor">What is your name?</label>
+                <input type="text" class="form-control" id="name">
+              </div>
+              
+              <div class="form-group">
+                <label for="covfefeFor">Do you like covfefe?</label>
+                <input type="text" class="form-control" id="covfefe">
+              </div>
+
+              <div class="form-group">
+                <label for="arithmeticFor">Do you like arithmetic?</label>
+                <input type="text" class="form-control" id="arithmetic">
+              </div>
+
+              <div class="form-group">
+                <label for="coalFor">Do you like coal?</label>
+                <input type="text" class="form-control" id="coal">
+              </div>
+
+              <div class="form-group">
+                <label for="jazzFor">Do you like jazz?</label>
+                <input type="text" class="form-control" id="jazz">
+              </div>
+
+              <div class="form-group">
+                <label for="countryMusicFor">Do you like country music?</label>
+                <input type="text" class="form-control" id="country">
+              </div>
+
+              <div class="form-group">
+                <label for="downFor">Do you like downtown?</label>
+                <input type="text" class="form-control" id="downtown">
+              </div>
+
+              <div class="form-group">
+                <label for="coffeeFor">Do you like coffee?</label>
+                <input type="text" class="form-control" id="coffee">
+              </div>
+
+              <div class="form-group">
+                <label for="ambitionFor">Do you like ambition?</label>
+                <input type="text" class="form-control" id="ambition">
+              </div>
+
+              <div class="form-group">
+                <label for="perspectiveFor">Do you like perspective?</label>
+                <input type="text" class="form-control" id="perspective">
+              </div>
+
+              <div class="form-group">
+                <label for="freedomFor">Do you like freedom?</label>
+                <input type="text" class="form-control" id="freedom">
+              </div>
+
+              <button type="submit" class="btn btn-primary submit">Submit</button>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
+
+
+  </div>
+
+</body>
+</html>
+
+<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
+<script type="text/javascript">
+
+    // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
+    // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
+    // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
+    // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
+
+    $(".submit").on("click", function(event) {
+      event.preventDefault();
+
+      // Here we grab the form elements
+      var newReservation = {
+        nameField: $("#name").val().trim(),
+        covfefeField: $("#covfefe").val().trim(),
+        arithmeticField: $("#arithmetic").val().trim(),
+        coalField: $("#coal").val().trim(),
+        jazzField: $("#jazz").val().trim(),
+        countryMusicField: $("#country").val().trim(),
+        downtownField: $("#downtown").val().trim(),
+        coffeeField: $("#coffee").val().trim(),
+        ambitionField: $("#ambition").val().trim(),
+        perspectiveField: $("perspective").val().trim(),
+        freedomField: $("#freedom").val().trim()
+      };
+
+      console.log(newReservation);
+
+      // This line is the magic. It"s very similar to the standard ajax function we used.
+      // Essentially we give it a URL, we give it the object we want to send, then we have a "callback".
+      // The callback is the response of the server. In our case, we set up code in api-routes that "returns" true or false
+      // depending on if a tables is available or not.
+
+      $.post("/api/friends", newReservation,
+        function(data) {
+
+          // If a table is available... tell user they are booked.
+          if (data) {
+            alert("Yay! You are officially booked!");
+          }
+
+          // If a table is available... tell user they on the waiting list.
+          else {
+            alert("Sorry you are on the wait list");
+          }
+
+          // Clear the form when submitting
+          /*$("#reserve-name").val("");
+          $("#reserve-phone").val("");
+          $("#reserve-email").val("");
+          $("#reserve-unique-id").val("");*/
+
+        $("#covfefeFor").val("");
+        $("#arithmeticFor").val("");
+        $("#coalFor").val("");
+        $("#jazzFor").val("");
+        $("#countryMusicFor").val("");
+        $("#downtownFor").val("");
+        $("#coffeeFor").val("");
+        $("#ambitionFor").val("");
+        $("perspectiveFor").val("");
+        $("#freedomFor").val("");
+
+        });
+
+    });
+
+</script>
